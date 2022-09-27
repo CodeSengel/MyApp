@@ -26,8 +26,9 @@ export default defineComponent({
         .from('list1')
         .select('*')
 
+
+
         console.log(data)
-        vari = data
 
       } catch (error) {
         console.log(error)

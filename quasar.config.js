@@ -53,8 +53,8 @@ module.exports = configure(function (ctx) {
       env: {
 
 
-        VUE_APP_SUPA_URL : process.env.VUE_APP_SUPA_URL,
-        VUE_APP_SUPA_ANON: process.env.VUE_APP_SUPA_ANON,
+        //VUE_APP_SUPA_URL : process.env.VUE_APP_SUPA_URL,
+        //VUE_APP_SUPA_ANON: process.env.VUE_APP_SUPA_ANON,
 
       },
 
