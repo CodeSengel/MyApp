@@ -9,6 +9,7 @@ const routes = [
       { path: 'register',name:'register', component: () => import('pages/Register.vue') },
       { path: 'email-confirmation',name:'email-confirmation', component: () => import('pages/Emailconfirmation.vue') },
 
+
     ]
   },
   {
@@ -16,6 +17,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
+      { path: 'me',name:'me', component: () => import('pages/Me.vue') },
       { path: 'db', component: () => import('layouts/DbLayout.vue') }
     ]
   },

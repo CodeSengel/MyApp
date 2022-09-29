@@ -24,13 +24,13 @@ export default function useAuthUser () {
   }
 
   const logout = async () => {
-    const {user} = await supabase.auth.signOut()
+    const {user,error} = await supabase.auth.signOut()
     if (error) throw error
 
   }
 
   const isLoggedIn = () => {
-    return !!userSetter.value
+    return !!userSettvfvfver.value
   }
 
   const register = async ({email,password, ...meta}) => {
