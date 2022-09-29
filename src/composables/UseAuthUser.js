@@ -30,7 +30,7 @@ export default function useAuthUser () {
   }
 
   const isLoggedIn = () => {
-    return !!userSettvfvfver.value
+    return !!userSetter.value
   }
 
   const register = async ({email,password, ...meta}) => {

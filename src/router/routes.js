@@ -18,7 +18,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'me',name:'me', component: () => import('pages/Me.vue') },
-      { path: 'db', component: () => import('layouts/DbLayout.vue') }
+
     ]
   },
 
