@@ -34,6 +34,8 @@ export default function useAuthUser () {
   }
 
   const register = async ({email,password, ...meta}) => {
+
+    console.log('voici : ',supabase.auth.user)
     const {user, error} = await supabase.auth.signUp(
       {
         email,
@@ -56,8 +58,17 @@ export default function useAuthUser () {
   }
 
 
-  const sendPasswordRestEmail = async (email) => {
+  const sendPasswordResetEmail = async (email) => {
     const { user,error} = await supabase.auth.api.resetPasswordForEmail(email)
+    if (error) throw error
+    return user
+  }
+
+  const resetPassword = async (accessToken, newPassword) => {
+    const {user, error} = await supabase.auth.api.updateUser (
+      accessToken,
+      {password: newPassword}
+    )
     if (error) throw error
     return user
   }
@@ -70,6 +81,7 @@ export default function useAuthUser () {
     isLoggedIn,
     register,
     update,
-    sendPasswordRestEmail
+    sendPasswordResetEmail,
+    resetPassword
   }
 }

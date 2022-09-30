@@ -31,6 +31,14 @@ export default route(function (/* { store, ssrContext } */) {
     const {isLoggedIn} = useAuthUser ()
 
     if (
+      to.hash.includes('type=recovery') &&
+      to.name !== 'reset-password'
+    ) {
+      const accessToken = to.hash.split('&')[0]
+      const token = accessToken.replace('#access_token=', '')
+      return { name:'reset-password', query:{token}}
+    }
+    if (
       !isLoggedIn () &&
       to.meta.requiresAuth &&
       !Object.keys(to.query).includes('fromEmail')

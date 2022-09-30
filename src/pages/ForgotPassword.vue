@@ -1,27 +1,30 @@
 <template>
   <q-page padding>
-    <q-form class="row justify-center" @submit.prevent="handlePasswordReset">
-      <p class="col-12 text-h5 text-center"> Login </p>
+    <q-form class="row justify-center" @submit.prevent="handlePasswordForgot">
+      <p class="col-12 text-h5 text-center"> Reset  </p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input
           label="Email"
-          v-model="form.email"
+          v-model="email"
+          lazy-rules
+          :rules="[val=>(val && val.length > 0) || 'Une adresse email est obligatoire']"
+          type ="email"
         />
 
 
 
         <div class="full-width q-pt-md q-gutter-y-sm">
           <q-btn
-            label="Login"
+            label="Envoyer un email de récupération"
             color="primary"
             class="full-width"
-            outline
+
             rounded
             type="submit"
           />
 
           <q-btn
-            label="Login"
+            label="Retourner"
             color="primary"
             class="full-width"
             outline
@@ -39,18 +42,36 @@
 </template>
 
 <script>
+import { defineComponent,ref } from 'vue'
 import useAuthUser from 'src/composables/UseAuthUser'
-import { defineComponent } from 'vue'
+import useNotify from 'src/composables/UseNotify'
+
 
 
 export default defineComponent({
-  name: 'PageMe',
+  name: 'PageForgotPassword',
   setup (){
-    const {user} = useAuthUser()
+    const {notifyError,notifySuccess} = useNotify()
+
+    const {sendPasswordResetEmail} = useAuthUser()
+    const email = ref('')
+
+    const handlePasswordForgot = async () => {
+
+        try {
+          await sendPasswordResetEmail(email.value)
+          notifySuccess("Password reset email sent to : " + email.value)
+        } catch (error) {
+          notifyError(error.message)
+        }
 
 
-    return {
-      user
+
+    }
+
+     return {
+      email,
+      handlePasswordForgot
     }
   }
 })

@@ -6,31 +6,53 @@
         <q-input
           label="Email"
           v-model="form.email"
+          lazy-rules
+          :rules="[val=>(val && val.length > 0) || 'Une adresse email est obligatoire']"
+          type ="email"
         />
 
         <q-input
-          label="Password"
+          label="Mot de passe"
           v-model="form.password"
+          lazy-rules
+          :rules="[val=>(val && val.length > 0) || 'Un mot de passe est obligatoire']"
+          type ="password"
         />
 
         <div class="full-width q-pt-md">
           <q-btn
-            label="Login"
+            label="S'identifier"
             color="primary"
             class="full-width"
-            outline
+
             rounded
             type="submit"
           />
+
+
+
         </div>
-        <div class="full-width q-pt-md">
+        <div class="full-width q-pt-md q-gutter-y-sm">
+
           <q-btn
-            label="Register"
+            label="S'inscrire"
             color="primary"
             class="full-width"
             flat
+            rounded
             to="/register"
           />
+
+          <q-btn
+            label="Mot de passe oublié "
+            color="primary"
+            class="full-width"
+            flat
+            :to="{name : 'forgot-password'}"
+          />
+
+
+
         </div>
 
       </div>
@@ -42,6 +64,8 @@
 import { defineComponent,ref} from 'vue'
 import useAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
+import useNotify from 'src/composables/UseNotify'
+
 
 export default defineComponent({
   name: 'PageLogin',
@@ -50,6 +74,8 @@ export default defineComponent({
 
     const router = useRouter()
     const {login} = useAuthUser()
+    const {notifyError,notifySuccess} = useNotify()
+
 
     const form = ref({
       email:'',
@@ -62,9 +88,11 @@ export default defineComponent({
         await login(form.value)
 
         router.push({name:'me'})
+        notifySuccess('Bienvenu !')
 
       } catch (error) {
-        alert(error.message)
+        notifyError(error.message)
+
       }
     }
 
