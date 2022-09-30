@@ -47,7 +47,7 @@ export default defineComponent({
   name: 'PageMe',
   setup (){
     const {user} = useAuthUser()
-    //console.log(user.value)
+
 
     return {
       user
