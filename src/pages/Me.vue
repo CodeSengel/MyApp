@@ -2,7 +2,7 @@
   <q-page class="flex flex-center">
 
     <div v-if=user>
-      <p> Hello {{user.user_metadata.name}} </p>
+      <p> Azul {{user.user_metadata.name}} </p>
     </div>
 
   </q-page>
@@ -17,7 +17,7 @@ export default defineComponent({
   name: 'PageMe',
   setup (){
     const {user} = useAuthUser()
-    //console.log(user.value)
+
 
     return {
       user

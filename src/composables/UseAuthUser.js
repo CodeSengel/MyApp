@@ -96,6 +96,17 @@ export default function useAuthUser () {
 
   }
 
+  const emptycheckUserExist = async (message) => {
+
+    const { data, error } = await supabase
+    .rpc('empty_email_check_tab',{emailtoremove : message})
+    if (error) throw error
+
+    }
+
+
+
+
 
 
   return {
@@ -109,6 +120,7 @@ export default function useAuthUser () {
     sendPasswordResetEmail,
     resetPassword,
     checkUserExist,
+    emptycheckUserExist
 
   }
 }

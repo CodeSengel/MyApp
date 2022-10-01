@@ -12,23 +12,31 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          My store
         </q-toolbar-title>
 
+        <q-toggle
+        v-model="toggleValue"
+
+        color="black"
+        @click="changemode"
+
+
+      />
 
         <q-btn-dropdown flat color="white" icon="person">
           <q-list>
             <q-item clickable v-close-popup @click = "handleLogout">
               <q-item-selection>
                 <q-item-lable>
-                  Logout
+                  Se déconnecter
                 </q-item-lable>
               </q-item-selection>
-
             </q-item>
           </q-list>
-
         </q-btn-dropdown>
+
+
 
 
 
@@ -44,7 +52,7 @@
         <q-item-label
           header
         >
-          Essential Links
+         <strong>  Menu </strong>
         </q-item-label>
 
         <EssentialLink
@@ -67,47 +75,12 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'My store',
+    caption: 'Tout est ici ! ',
+    icon: 'person',
+
   },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
+
 ]
 
 
@@ -117,10 +90,15 @@ import {useQuasar} from 'quasar'
 
 export default defineComponent({
   name: 'MainLayout',
+  colorDarkModeBtn : "red",
+  toggleValue : ref(true),
 
   components: {
     EssentialLink
   },
+
+
+
 
   setup () {
     const $q = useQuasar()
@@ -129,8 +107,8 @@ export default defineComponent({
 
     const handleLogout = async () => {
       $q.dialog({
-        title: 'Logout',
-        message: 'Do you really want to leave ?',
+        title: 'Se déconnecter',
+        message: 'Voulez vous vraiement vous déconnecter ?',
         cancel : true,
         persistence: true
       }).onOk(
@@ -144,14 +122,9 @@ export default defineComponent({
 
 
 
-
-
-
-
-
-
-
     const leftDrawerOpen = ref(false)
+
+
 
     return {
       essentialLinks: linksList,
@@ -159,8 +132,16 @@ export default defineComponent({
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
-      handleLogout
+      handleLogout,
+      toggleValue: ref(true),
+
     }
+  },
+
+  methods : {
+    changemode : function () {
+
+    this.$q.dark.set(this.toggleValue) }
   }
 })
 </script>

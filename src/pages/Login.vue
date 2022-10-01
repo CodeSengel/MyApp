@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-form class="row justify-center" @submit.prevent="handleLogin">
-      <p class="col-12 text-h5 text-center"> Login </p>
+      <p class="col-12 text-h5 text-center"> S'identifier </p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input
           label="Email"
@@ -17,6 +17,7 @@
           lazy-rules
           :rules="[val=>(val && val.length > 0) || 'Un mot de passe est obligatoire']"
           type ="password"
+          autocomplete="on"
         />
 
         <div class="full-width q-pt-md">

@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <q-form class="row justify-center" @submit.prevent="handleRegister">
-      <p class="col-12 text-h5 text-center"> Register </p>
+      <p class="col-12 text-h5 text-center"> S'inscrire </p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
 
         <q-input
@@ -26,6 +26,7 @@
           lazy-rules
           :rules="[val=>(val && val.length >= 6) || 'Un mot de passe est obligatoire avec 6 caractères au minimum']"
           type = "password"
+          autocomplete="on"
 
 
         />
@@ -67,7 +68,7 @@ export default defineComponent({
   setup (){
     const {notifyError,notifySuccess} = useNotify()
     const router = useRouter()
-    const {register,checkUserExist} = useAuthUser()
+    const {register,checkUserExist, emptycheckUserExist} = useAuthUser()
 
     const form = ref({
       name:'',
@@ -93,7 +94,10 @@ export default defineComponent({
         } else {EmailAlredyExist=true}
       }
 
-      if(EmailAlredyExist) {notifyError("Vous avez déjà créé un compte")}
+      if(EmailAlredyExist) {
+        notifyError("Vous avez déjà créé un compte"),
+        await emptycheckUserExist(form.value.email)
+      }
 
       else{
         try {

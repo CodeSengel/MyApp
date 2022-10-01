@@ -53,54 +53,55 @@ export default defineComponent({
   setup (){
     const {notifyError,notifySuccess} = useNotify()
 
-    const {sendPasswordResetEmail,checkUserExist} = useAuthUser()
+    const {sendPasswordResetEmail,checkUserExist,emptycheckUserExist} = useAuthUser()
     const email = ref('')
     var EmailAlredyExist = ref(true)
 
     const handlePasswordForgot = async () => {
 
-      console.log('check1')
+
 
       try {
         EmailAlredyExist =true
-        console.log('check2')
-        await checkUserExist(email.value)
-        console.log('check3')
-      } catch (error) {
-        console.log('check4')
-        if (error && error.code == 23503){
-          console.log('check5')
-          EmailAlredyExist=false
-          console.log('check6')
 
-        } else {console.log('check7') , EmailAlredyExist=true , console.log('check8')}
+        await checkUserExist(email.value)
+
+      } catch (error) {
+
+        if (error && error.code == 23503){
+
+          EmailAlredyExist=false
+
+
+        } else {EmailAlredyExist=true }
 
       }
 
-      console.log('voici le check  : ',EmailAlredyExist)
+
       if(EmailAlredyExist == true) {
-        console.log('check9')
+
 
         try {
-          console.log('check10')
+
           await sendPasswordResetEmail(email.value)
-          console.log('check11')
-          notifySuccess("Password reset email sent to : " + email.value)
-          console.log('check12')
+
+          notifySuccess("Un email de réinitialisation vient d'être envoyé à : " + email.value)
+
         } catch (error) {
-          console.log('check13')
+
           notifyError(error.message)
-          console.log('check14')
+
         }
+        await emptycheckUserExist(email.value)
 
 
         }
 
       else{
 
-        console.log('check15')
+
         notifyError("compte n'existe pas " )
-        console.log('check16')
+
 
 
       }

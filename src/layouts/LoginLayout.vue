@@ -8,6 +8,15 @@
           {{AppName}}
         </q-toolbar-title>
 
+        <q-toggle
+        v-model="toggleValue"
+
+        color="black"
+        @click="changemode"
+
+
+      />
+
 
       </q-toolbar>
     </q-header>
@@ -21,12 +30,13 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent,ref } from 'vue'
 
 
 
 export default defineComponent({
   name: 'LoginLayout',
+  toggleValue : ref(true),
 
   setup () {
 
@@ -35,8 +45,15 @@ export default defineComponent({
     var AppName = process.env.QUASAR_APP_NAME
 
     return {
-      AppName
+      AppName,
+      toggleValue: ref(true),
     }
+  },
+
+  methods : {
+    changemode : function () {
+
+    this.$q.dark.set(this.toggleValue) }
   }
 })
 </script>
