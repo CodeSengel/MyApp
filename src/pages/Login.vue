@@ -82,18 +82,29 @@ export default defineComponent({
       password: ''
     })
 
+    const checkEmailExist = ref(false)
+
     const handleLogin = async () => {
-      try {
 
-        await login(form.value)
 
-        router.push({name:'me'})
-        notifySuccess('Bienvenu !')
 
-      } catch (error) {
-        notifyError(error.message)
 
-      }
+
+
+        try {
+
+              await login(form.value)
+
+              router.push({name:'me'})
+              notifySuccess('Bienvenu !')
+
+            } catch (error) {
+              notifyError(error.message)
+
+            }
+
+
+
     }
 
     return {

@@ -11,14 +11,25 @@ export default function useAuthUser () {
 
   const login = async ({email,password}) => {
 
-    const {user, error} = await supabase.auth.signIn({email,password})
 
-    if (error) throw error
-    return user
+
+
+
+      const {user, error} = await supabase.auth.signIn({email,password})
+
+      if (error) throw error
+      return user
+
+
+
+
+
   }
 
   const loginWithSocialProvider = async (provider) => {
+
     const {user, error} = await supabase.auth.signIn({provider})
+
     if (error) throw error
     return user
   }
@@ -35,7 +46,10 @@ export default function useAuthUser () {
 
   const register = async ({email,password, ...meta}) => {
 
-    console.log('voici : ',supabase.auth.user)
+
+
+
+
     const {user, error} = await supabase.auth.signUp(
       {
         email,
@@ -73,6 +87,17 @@ export default function useAuthUser () {
     return user
   }
 
+
+  const checkUserExist = async (message) => {
+
+  const { data, error } = await supabase
+  .rpc('check_email', { emailtochek : message})
+  if (error) throw error
+
+  }
+
+
+
   return {
     user,
     login,
@@ -82,6 +107,8 @@ export default function useAuthUser () {
     register,
     update,
     sendPasswordResetEmail,
-    resetPassword
+    resetPassword,
+    checkUserExist,
+
   }
 }

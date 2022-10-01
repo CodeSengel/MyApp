@@ -67,7 +67,7 @@ export default defineComponent({
   setup (){
     const {notifyError,notifySuccess} = useNotify()
     const router = useRouter()
-    const {register} = useAuthUser()
+    const {register,checkUserExist} = useAuthUser()
 
     const form = ref({
       name:'',
@@ -75,16 +75,48 @@ export default defineComponent({
       password:''
     })
 
+    var EmailAlredyExist = ref(false)
+
+
+
+
+
+
+
     const handleRegister = async () => {
+
       try {
-        await register(form.value)
-        router.push({
-          name:'email-confirmation',
-          query :{email: form.value.email}
-        })
+        await checkUserExist(form.value.email)
       } catch (error) {
-        notifyError(error.message)
+        if (error && error.code == 23503){
+          EmailAlredyExist=false
+        } else {EmailAlredyExist=true}
       }
+
+      if(EmailAlredyExist) {notifyError("Vous avez déjà créé un compte")}
+
+      else{
+        try {
+          await register(form.value)
+          router.push({
+            name:'email-confirmation',
+            query :{email: form.value.email}
+          })
+          }
+          catch (error) {
+              notifyError(error.message)
+                          }
+      }
+
+
+
+
+
+
+
+
+
+
     }
 
     return {
