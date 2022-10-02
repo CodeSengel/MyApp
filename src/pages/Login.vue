@@ -60,6 +60,7 @@
 
             rounded
             @click="handleLoginWithGoogleAccount"
+            :to="'/me'"
           />
 
 
@@ -127,12 +128,16 @@ export default defineComponent({
 
     }
 
+
+
     const handleLoginWithGoogleAccount = async () => {
 
 
       try {
 
-        await loginWithSocialProvider("google")
+        await loginWithSocialProvider("google").then(
+          router.go(this.$router.currentRoute)
+        )
 
 
 
@@ -145,13 +150,7 @@ export default defineComponent({
     }
 
 
-
-
-
-
-
-
-}
+      }
 
     return {
       form,
