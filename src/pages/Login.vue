@@ -102,6 +102,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      router.go(this.$router.currentRoute)
 
       if (isLoggedIn) {
         router.push({name:'me'})
@@ -135,9 +136,7 @@ export default defineComponent({
 
       try {
 
-        await loginWithSocialProvider("google").then(
-          router.go(this.$router.currentRoute)
-        )
+        await loginWithSocialProvider("google")
 
 
 
