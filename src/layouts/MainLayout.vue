@@ -91,7 +91,7 @@ import {useQuasar} from 'quasar'
 export default defineComponent({
   name: 'MainLayout',
   colorDarkModeBtn : "red",
-  toggleValue : ref(true),
+
 
   components: {
     EssentialLink
@@ -133,7 +133,7 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       handleLogout,
-      toggleValue: ref(true),
+      toggleValue: ref(false),
 
     }
   },
