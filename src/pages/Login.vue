@@ -129,9 +129,12 @@ export default defineComponent({
     const handleLoginWithGoogleAccount = async () => {
 
 try {
-        await loginWithSocialProvider("google")
-        router.push({name:'me'})
-        notifySuccess('Bienvenu !')
+        await loginWithSocialProvider("google").then(
+          router.push({name:'me'}),
+          notifySuccess('Bienvenu !')
+        )
+
+
 
 
     } catch (error) {
