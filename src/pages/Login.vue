@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-form class="row justify-center" @submit.prevent="handleLogin">
+    <q-form class="row justify-center" @submit.prevent="handleLoginWithEmail">
       <p class="col-12 text-h5 text-center"> S'identifier </p>
       <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input
@@ -53,6 +53,16 @@
           />
 
 
+          <q-btn
+            label="Google"
+            color="primary"
+
+
+            rounded
+            @click="handleLoginWithGoogleAccount"
+          />
+
+
 
         </div>
 
@@ -70,11 +80,18 @@ import useNotify from 'src/composables/UseNotify'
 
 export default defineComponent({
   name: 'PageLogin',
+  methods : {
+
+    logtest : function () {
+      console.log("yes")
+    }
+
+  },
 
   setup () {
 
     const router = useRouter()
-    const {login , isLoggedIn} = useAuthUser()
+    const {login , isLoggedIn,loginWithSocialProvider} = useAuthUser()
     const {notifyError,notifySuccess} = useNotify()
 
 
@@ -91,12 +108,7 @@ export default defineComponent({
 
     const checkEmailExist = ref(false)
 
-    const handleLogin = async () => {
-
-
-
-
-
+    const handleLoginWithEmail = async () => {
 
         try {
 
@@ -114,9 +126,27 @@ export default defineComponent({
 
     }
 
+    const handleLoginWithGoogleAccount = async () => {
+
+try {
+        await loginWithSocialProvider("google")
+        router.push({name:'me'})
+        notifySuccess('Bienvenu !')
+
+
+    } catch (error) {
+      notifyError(error.message)
+
+    }
+
+
+
+}
+
     return {
       form,
-      handleLogin
+      handleLoginWithEmail,
+      handleLoginWithGoogleAccount
     }
 
   }
