@@ -101,6 +101,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
+
       if (isLoggedIn) {
         router.push({name:'me'})
       }
@@ -127,26 +128,26 @@ export default defineComponent({
     }
 
     const handleLoginWithGoogleAccount = async () => {
-      console.log("check1")
+
 
       try {
-        console.log("check2")
+
         await loginWithSocialProvider("google")
-        console.log("check3")
+
 
 
 
     } catch (error) {
-      console.log("check4")
+
       notifyError(error.message)
 
 
     }
-    console.log("check5")
-    router.push({name:'me'}),
-    console.log("check6")
-    notifySuccess('Bienvenu !')
-    console.log("check7")
+
+
+
+
+
 
 
 

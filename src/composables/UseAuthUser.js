@@ -3,11 +3,14 @@ import {ref} from 'vue'
 //import useSupabase from 'src/supabase' // not necessary
 
 import { supabase } from 'src/supabase'
+import { useRouter } from 'vue-router'
 
 const user = ref(null)
 export default function useAuthUser () {
 
   //const {supabase} = useSupabase      // not necessary
+
+  const router = useRouter()
 
   const login = async ({email,password}) => {
 
@@ -29,6 +32,7 @@ export default function useAuthUser () {
   const loginWithSocialProvider = async (provider) => {
 
     const {user, error} = await supabase.auth.signIn({provider})
+    router.push({name:'me'})
 
     if (error) throw error
     return user
