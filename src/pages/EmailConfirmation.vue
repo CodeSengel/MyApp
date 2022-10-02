@@ -4,7 +4,7 @@
 
       <div>
         <p>
-          <strong> Merci pour votre inscription </strong>
+          <strong> Merci pour votre inscription ! </strong>
         </p>
       </div>
 
