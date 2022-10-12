@@ -1,12 +1,17 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="header" elevated>
       <q-toolbar>
 
 
         <q-toolbar-title>
           {{AppName}}
+
+          <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
+
+
         </q-toolbar-title>
+
 
         <q-toggle
         v-model="toggleValue"
@@ -57,3 +62,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+  .header{
+    background: linear-gradient(to top, #30cfd0 0%, #330867 120%);
+  }
+</style>

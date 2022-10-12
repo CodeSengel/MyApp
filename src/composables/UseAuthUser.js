@@ -12,11 +12,6 @@ export default function useAuthUser () {
 
 
   const login = async ({email,password}) => {
-
-
-
-
-
       const {user, error} = await supabase.auth.signIn({email,password})
 
       if (error) throw error
@@ -28,13 +23,19 @@ export default function useAuthUser () {
 
   }
 
-  const loginWithSocialProvider = async (provider) => {
+  const loginWithSocialProvider = async (myprovider) => {
 
-    const {user, error} = await supabase.auth.signIn({provider})
+    const { user, session, error } = await supabase.auth.signIn({
+      provider: myprovider,
+    })
+
+
+
+
 
 
     if (error) throw error
-    return user
+    return user,session
   }
 
   const logout = async () => {

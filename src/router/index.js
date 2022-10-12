@@ -36,7 +36,7 @@ export default route(function (/* { store, ssrContext } */) {
     ) {
       const accessToken = to.hash.split('&')[0]
       const token = accessToken.replace('#access_token=', '')
-      return { name:'reset-password', query:{token}}
+      return { name:'reset-password', query:{ token }}
     }
     if (
       !isLoggedIn () &&

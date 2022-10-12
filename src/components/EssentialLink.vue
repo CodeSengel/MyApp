@@ -1,15 +1,14 @@
 <template>
   <q-item
     clickable
-    tag="a"
-    target="_blank"
-    :href="link"
+    :to = "{name : routername}"
+    exact
   >
     <q-item-section
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" />
+      <q-icon :name="icon" :size="size" />
     </q-item-section>
 
     <q-item-section>
@@ -35,12 +34,16 @@ export default defineComponent({
       default: ''
     },
 
-    link: {
+    routername: {
       type: String,
-      default: '#'
+      default: ''
     },
 
     icon: {
+      type: String,
+      default: ''
+    },
+    size : {
       type: String,
       default: ''
     }

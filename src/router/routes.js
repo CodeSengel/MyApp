@@ -20,6 +20,9 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'me',name:'me', component: () => import('pages/Me.vue') },
+      { path: 'category',name:'category', component: () => import('pages/Category/List.vue') },
+
+
 
     ],
     meta : {

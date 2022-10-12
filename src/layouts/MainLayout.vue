@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header class="header" elevated>
       <q-toolbar>
         <q-btn
           flat
@@ -13,6 +13,7 @@
 
         <q-toolbar-title>
           My store
+          <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
         </q-toolbar-title>
 
         <q-toggle
@@ -75,9 +76,19 @@ import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
   {
-    title: 'My store',
-    caption: 'Tout est ici ! ',
-    icon: 'person',
+    title: 'Accueil',
+    caption: 'Bienvenu',
+    icon: 'mdi-home',
+    size : "md",
+    routername : "me"
+
+  },
+  {
+    title: 'Produit',
+    caption: 'Voir tous mes produits',
+    icon: 'mdi-tshirt-crew',
+    size : "md",
+    routername : "category"
 
   },
 
@@ -145,3 +156,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+  .header{
+    background: rgb(63,251,236);
+    background: linear-gradient(182deg, rgba(63,251,236,0.9500175070028011) 0%, rgba(24,66,180,1) 68%);
+  }
+</style>

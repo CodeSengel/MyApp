@@ -2,7 +2,7 @@
   <q-page padding>
     <q-form class="row justify-center" @submit.prevent="handleLoginWithEmail">
       <p class="col-12 text-h5 text-center"> S'identifier </p>
-      <div class="col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
+      <div class=" col-md-4 col-sm-6 col-xs-10 q-gutter-y-md">
         <q-input
           label="Email"
           v-model="form.email"
@@ -23,9 +23,8 @@
         <div class="full-width q-pt-md">
           <q-btn
             label="S'identifier"
+            class="full-width mybutton"
             color="primary"
-            class="full-width"
-
             rounded
             type="submit"
           />
@@ -52,7 +51,7 @@
             :to="{name : 'forgot-password'}"
           />
 
-
+<!-- Comment
           <q-btn
             label="Google"
             color="primary"
@@ -62,38 +61,39 @@
             @click="handleLoginWithGoogleAccount"
             :to="'/me'"
           />
-
+-->
 
 
         </div>
 
+        <q-img
+        style="width:50%; margin-left: 30%;"
+        src="https://cdn.pixabay.com/photo/2014/04/02/10/53/shopping-cart-304843_960_720.png"/>
       </div>
     </q-form>
   </q-page>
 </template>
 
 <script>
-import { defineComponent,ref, onMounted} from 'vue'
+import { defineComponent,ref, onMounted,} from 'vue'
 import useAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
 import useNotify from 'src/composables/UseNotify'
 
 
+
+
+
 export default defineComponent({
   name: 'PageLogin',
-  methods : {
 
-    logtest : function () {
-      console.log("yes")
-    }
-
-  },
 
   setup () {
 
     const router = useRouter()
     const {login , isLoggedIn,loginWithSocialProvider} = useAuthUser()
     const {notifyError,notifySuccess} = useNotify()
+    const refresh= ref(false)
 
 
     const form = ref({
@@ -101,12 +101,17 @@ export default defineComponent({
       password: ''
     })
 
+
+
+
+
+
     onMounted(() => {
-      router.go(this.$router.currentRoute)
 
       if (isLoggedIn) {
+        console.log("is logged in")
         router.push({name:'me'})
-      }
+      }else{console.log("is not logged in")}
     })
 
     const checkEmailExist = ref(false)
@@ -129,34 +134,38 @@ export default defineComponent({
 
     }
 
+    const   handleLoginWithGoogleAccount = async () => {
 
-
-    const handleLoginWithGoogleAccount = async () => {
-
-
-      try {
-
-        await loginWithSocialProvider("google")
-
-
-
-
-    } catch (error) {
-
-      notifyError(error.message)
+       await loginWithSocialProvider('google')
 
 
     }
 
 
-      }
+
+
+
+
+
+        /*
+        console.log("check1"),
+        router.go(router.currentRoute),
+        console.log("check2") */
+
+
 
     return {
       form,
       handleLoginWithEmail,
-      handleLoginWithGoogleAccount
+      handleLoginWithGoogleAccount,
+
+
+
     }
 
   }
 })
 </script>
+
+
+
