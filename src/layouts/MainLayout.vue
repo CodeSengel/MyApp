@@ -84,13 +84,22 @@ const linksList = [
 
   },
   {
-    title: 'Produit',
-    caption: 'Voir tous mes produits',
-    icon: 'mdi-tshirt-crew',
+    title: 'Catégories *',
+    caption: 'Voir mes catégories',
+    icon: 'mdi-sitemap',
     size : "md",
     routername : "category"
 
   },
+  {
+    title: 'Produit',
+    caption: 'Voir mes produits',
+    icon: 'mdi-tshirt-crew',
+    size : "md",
+    routername : "product"
+
+  },
+
 
 ]
 

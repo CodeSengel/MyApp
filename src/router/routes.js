@@ -21,6 +21,8 @@ const routes = [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'me',name:'me', component: () => import('pages/Me.vue') },
       { path: 'category',name:'category', component: () => import('pages/Category/List.vue') },
+      { path: 'form-category/:id?',name:'form-category', component: () => import('pages/Category/Form.vue') },
+      { path: 'product',name:'product', component: () => import('pages/Product/List.vue') },
 
 
 

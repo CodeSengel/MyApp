@@ -3,7 +3,7 @@ import useAuthUser from './UseAuthUser'
 
 export default function useApi() {
 
-  const {user} = useAuthUser
+  const {user} = useAuthUser()
 
 // My my functions :  Get rows from table
 
@@ -43,11 +43,14 @@ export default function useApi() {
   }
 
   const post = async (table, form) => {
+    console.log('voici le user : ' , user)
+
     const { data, error } = await supabase
     .from(table)
     .insert([
       {
         ...form,
+
         user_id: user.value.id,
       },
     ]);
@@ -83,6 +86,7 @@ export default function useApi() {
 
 
   return {
+
     list,
     post,
     getById,
