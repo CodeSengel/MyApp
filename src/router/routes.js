@@ -20,9 +20,11 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       { path: 'me',name:'me', component: () => import('pages/Me.vue') },
-      { path: 'category',name:'category', component: () => import('pages/Category/List.vue') },
+      { path: 'category',name:'category', component: () => import('src/pages/Category/List.vue') },
       { path: 'form-category/:id?',name:'form-category', component: () => import('pages/Category/Form.vue') },
-      { path: 'product',name:'product', component: () => import('pages/Product/List.vue') },
+      { path: 'product',name:'product', component: () => import('src/pages/Product/List.vue') },
+      { path: 'form-product/:id?',name:'form-product', component: () => import('pages/Product/Form.vue') },
+
 
 
 

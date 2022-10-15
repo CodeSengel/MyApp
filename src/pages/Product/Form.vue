@@ -13,8 +13,45 @@
 
           label = "Nom"
           v-model = "form.name"
-          :rules="[val=>(val && val.length > 0) || 'Le nom de la nouvelle catégorie est obligatoire']"
+          :rules="[val=>(val && val.length > 0) || 'Le nom du produit est obligatoire']"
         />
+
+        <q-editor
+          v-model="form.description"
+          min-height ="5rem"
+
+        />
+
+        <q-input
+
+          label = "Quantité"
+          v-model = "form.amount"
+          :rules="[val=> !!val  || 'La quantité est obligatoire']"
+          type = "number"
+          />
+
+        <q-input
+
+          label = "Prix (DA)"
+          v-model = "form.price"
+          :rules="[val=> !!val  || 'Le prix est obligatoire']"
+          type = "number"
+
+
+        />
+
+        <q-select
+          v-model = "form.category_id"
+          :options = "optionsCategory"
+          lable="Categorie"
+          option-value="id"
+          option-label="name"
+          map-options
+          emit-value
+          :rules="[val => !!val || 'La catégorie est obligatoire']"
+        />
+
+
 
         <q-btn
           :label=" isUpdate ? 'Modifier' : 'Ajouter'"
@@ -29,7 +66,7 @@
           color="primary"
           class="full-width"
           flat
-          :to = "{name : 'category'}"
+          :to = "{name : 'product'}"
         />
 
 
@@ -56,22 +93,33 @@
   export default defineComponent ({
     name : 'PageFormCategory',
     setup () {
-      const table = process.env.QUASAR_APP_TAB_NAME_CATEGORIES
+      const table = process.env.QUASAR_APP_TAB_NAME_PRODUITS
+      const tableCategoy = process.env.QUASAR_APP_TAB_NAME_CATEGORIES
       const router = useRouter()
       const route = useRoute()
-      const {post , getById, update} = useApi()
+      const {post , getById, update,list} = useApi()
       const {notifyError,notifySuccess} = useNotify()
       const isUpdate = computed (() => route.params.id)
-      let category = {}
+      let product = {}
+      const optionsCategory = ref([])
       const form = ref ({
-        name : ''
+        name : '',
+        description: '',
+        amount: 0,
+        price : 0,
+        category_id:''
       })
 
       onMounted(()=> {
+        handleListCategories()
         if(isUpdate.value){
-          handleGetCategory(isUpdate.value)
+          handleGetProduct(isUpdate.value)
         }
       })
+
+      const handleListCategories = async () => {
+        optionsCategory.value = await list(tableCategoy)
+      }
 
 
       const handleSubmit = async () => {
@@ -82,21 +130,21 @@
             notifySuccess('Modifications enregistrées')
           } else {
             await post(table , form.value)
-            notifySuccess('Nouvelle catégorie créée')
+            notifySuccess('Nouveau produit créé')
 
           }
 
-          router.push({name:'category'})
+          router.push({name:'product'})
         } catch (error) {
 
           notifyError(error.message)
         }
       }
 
-      const handleGetCategory = async (id) => {
+      const handleGetProduct = async (id) => {
         try {
-          category = await getById(table, id)
-          form.value = category
+          product = await getById(table, id)
+          form.value = product
         } catch (error) {
           notifyError(error.message)
         }
@@ -106,7 +154,7 @@
       return {
         handleSubmit,
         form,
-        handleGetCategory,
+        optionsCategory,
         isUpdate,
 
       }

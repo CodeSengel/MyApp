@@ -4,12 +4,13 @@
 
     <div class="row ">
 
+
       <q-linear-progress v-if="loading" indeterminate />
 
       <q-table
         title="Categories"
         :rows="categories "
-        :columns="columns"
+        :columns="columnsCategory"
         row-key="id"
         class="col-12"
 
@@ -21,6 +22,7 @@
         </span >
         <q-space/>
         <q-btn
+          v-if="$q.platform.is.desktop"
           label = "Ajouter"
           color = "primary"
           icon = "mdi-plus"
@@ -51,10 +53,17 @@
       </q-table>
 
 
-
-
-
     </div>
+
+      <q-page-sticky
+      v-if="$q.platform.is.mobile"
+      position="bottom-right"
+      :offset="[20,100]" >
+
+        <q-btn fab icon="mdi-plus" color = "indigo" :to= "{name : 'form-category'}" />
+
+      </q-page-sticky>
+
 
   </q-page>
 
@@ -63,23 +72,20 @@
 
 <script>
 import { defineComponent,ref, onMounted} from 'vue'
+
 import useApi from 'src/composables/UseApi'
 import useNotify from 'src/composables/UseNotify'
 import { useRouter } from 'vue-router'
 import {useQuasar} from 'quasar'
-const columns = [
+import{columnsCategory} from './table'
 
-  { name: 'name', align: 'left', label: 'Nom', field: 'name', sortable: true },
-  { name: 'actions', align: 'right', label: 'Actions', field: 'actions', sortable: true },
-
-
-]
 
 
 export default defineComponent ({
   name : 'PageCategoryList',
 
   setup(){
+
     const CategoriesTabName = process.env.QUASAR_APP_TAB_NAME_CATEGORIES
     const categories = ref([])
     const {list,remove} = useApi()
@@ -136,7 +142,7 @@ export default defineComponent ({
 
 
     return{
-      columns,
+      columnsCategory,
       categories,
       loading,
       handleEdit,

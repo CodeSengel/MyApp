@@ -110,6 +110,29 @@ export default function useAuthUser () {
 
 
 
+    const checkUserAdmin = async (table , userid) => {
+
+      const { data, error } = await supabase
+      .from(table)
+      .select("user_id")
+      .eq('user_id', userid)
+      .count()
+
+      if (error) throw error
+      return data
+
+
+      }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -124,7 +147,8 @@ export default function useAuthUser () {
     sendPasswordResetEmail,
     resetPassword,
     checkUserExist,
-    emptycheckUserExist
+    emptycheckUserExist,
+    checkUserAdmin
 
   }
 }

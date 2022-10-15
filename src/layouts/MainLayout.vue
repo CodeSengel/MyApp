@@ -13,6 +13,7 @@
 
         <q-toolbar-title>
           My store
+
           <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
         </q-toolbar-title>
 
@@ -71,7 +72,8 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref , onMounted} from 'vue'
+
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
@@ -92,7 +94,7 @@ const linksList = [
 
   },
   {
-    title: 'Produit',
+    title: 'Produit *',
     caption: 'Voir mes produits',
     icon: 'mdi-tshirt-crew',
     size : "md",
@@ -123,7 +125,10 @@ export default defineComponent({
   setup () {
     const $q = useQuasar()
     const router = useRouter()
-    const {logout} = useAuthUser()
+    const {logout , checkUserAdmin} = useAuthUser()
+    const {user} = useAuthUser()
+    var admin = 1
+
 
     const handleLogout = async () => {
       $q.dialog({
@@ -142,6 +147,7 @@ export default defineComponent({
 
 
 
+
     const leftDrawerOpen = ref(false)
 
 
@@ -154,6 +160,8 @@ export default defineComponent({
       },
       handleLogout,
       toggleValue: ref(false),
+      user,
+
 
     }
   },

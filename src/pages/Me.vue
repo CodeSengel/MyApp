@@ -3,8 +3,7 @@
 
     <div v-if=user>
       <p> Azul {{user.user_metadata.name}} </p>
-      <q-btn class="bg-orange-2" label="list" @click="handlelist"></q-btn>
-      <q-btn class="bg-indigo" label="pot" @click="handlepost"></q-btn>
+
     </div>
 
   </q-page>
