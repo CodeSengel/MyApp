@@ -59,7 +59,8 @@ module.exports = configure(function (ctx) {
         VUE_APP_SUPA_ANON: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndlY2JmbHJpeG9waWlrdXplbXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjQxMjI0MjYsImV4cCI6MTk3OTY5ODQyNn0.mcYIaEuQDG71e7N6wToJ_K4jRyf7_OYdFWCQ1CKTMeA",
         QUASAR_APP_NAME :"Soukiw",
         QUASAR_APP_TAB_NAME_CATEGORIES :"categories",
-        QUASAR_APP_TAB_NAME_PRODUITS :"produits"
+        QUASAR_APP_TAB_NAME_PRODUITS :"produits",
+        QUASAR_APP_STORAGE_NAME_PRODUITS :"products"
 
       },
 

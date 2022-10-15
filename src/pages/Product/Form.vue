@@ -16,6 +16,13 @@
           :rules="[val=>(val && val.length > 0) || 'Le nom du produit est obligatoire']"
         />
 
+        <q-input
+          label = "Photo"
+          v-model = "img"
+          type = "file"
+          accept = "image/*"
+        />
+
         <q-editor
           v-model="form.description"
           min-height ="5rem"
@@ -95,9 +102,10 @@
     setup () {
       const table = process.env.QUASAR_APP_TAB_NAME_PRODUITS
       const tableCategoy = process.env.QUASAR_APP_TAB_NAME_CATEGORIES
+      const storageProduct = process.env.QUASAR_APP_STORAGE_NAME_PRODUITS
       const router = useRouter()
       const route = useRoute()
-      const {post , getById, update,list} = useApi()
+      const {post , getById, update,list , uploadImg} = useApi()
       const {notifyError,notifySuccess} = useNotify()
       const isUpdate = computed (() => route.params.id)
       let product = {}
@@ -107,8 +115,10 @@
         description: '',
         amount: 0,
         price : 0,
-        category_id:''
+        category_id:'',
+        img_url : ''
       })
+      const img = ref([])
 
       onMounted(()=> {
         handleListCategories()
@@ -124,6 +134,14 @@
 
       const handleSubmit = async () => {
         try {
+
+
+
+          if(img.value.length > 0) {
+            const imgUrl = await uploadImg(img.value[0], storageProduct )
+
+            form.value.img_url = imgUrl
+          }
 
           if(isUpdate.value){
             await update(table, form.value)
@@ -156,6 +174,7 @@
         form,
         optionsCategory,
         isUpdate,
+        img
 
       }
     }
