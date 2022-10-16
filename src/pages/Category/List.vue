@@ -1,6 +1,6 @@
 <template>
 
-  <q-page padding class="justify-center">
+  <q-page v-if="admin" padding class="justify-center">
 
     <div class="row ">
 
@@ -67,12 +67,14 @@
 
   </q-page>
 
+
+
 </template>
 
 
 <script>
 import { defineComponent,ref, onMounted} from 'vue'
-
+import useAuthUser from 'src/composables/UseAuthUser'
 import useApi from 'src/composables/UseApi'
 import useNotify from 'src/composables/UseNotify'
 import { useRouter } from 'vue-router'
@@ -94,6 +96,8 @@ export default defineComponent ({
     const loadingAllPage = ref(true)
     const router = useRouter()
     const $q = useQuasar()
+    const {user , checkUserAdmin} = useAuthUser()
+    const admin = ref(false)
 
 
     const handleListCategories = async () => {
@@ -133,10 +137,19 @@ export default defineComponent ({
 
     }
 
+    const handleCheckBig = async (message) =>  {
+
+      admin.value = await checkUserAdmin(message)
+
+    }
+
     onMounted (() => {
+      handleCheckBig(user.value.id)
       handleListCategories()
 
     })
+
+
 
 
 
@@ -146,7 +159,8 @@ export default defineComponent ({
       categories,
       loading,
       handleEdit,
-      handleRemoveCategory
+      handleRemoveCategory,
+      admin
 
 
     }

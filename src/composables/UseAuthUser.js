@@ -110,19 +110,23 @@ export default function useAuthUser () {
 
 
 
-    const checkUserAdmin = async (table , userid) => {
+  const checkUserAdmin = async (message) => {
 
-      const { data, error } = await supabase
-      .from(table)
-      .select("user_id")
-      .eq('user_id', userid)
-      .count()
+    const { data, error } = await supabase
+    .rpc('check_big', {
+      userid : message
+    })
 
-      if (error) throw error
-      return data
+    if (error) throw error
+    return(data)
+
+    }
 
 
-      }
+
+
+
+
 
 
 

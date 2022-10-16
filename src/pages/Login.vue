@@ -109,7 +109,7 @@ export default defineComponent({
     onMounted(() => {
 
       if (isLoggedIn) {
-        console.log("is logged in")
+
         router.push({name:'me'})
       }else{console.log("is not logged in")}
     })

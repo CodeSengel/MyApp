@@ -1,6 +1,6 @@
 <template>
 
-  <q-page padding class="justify-center">
+  <q-page v-if="admin" padding class="justify-center">
 
     <div class="row-11 ">
 
@@ -13,6 +13,8 @@
         :columns="columnsProduct"
         row-key="id"
         class="col-12"
+        :rows-per-page-options="[0]"
+        clickable
 
       >
 
@@ -31,10 +33,11 @@
       </template>
 
 
-      <template v-slot:body-cell-img_url="props">
+      <template  v-slot:body-cell-img_url="props">
+
         <q-td :props="props">
-          <q-avatar v-if="props.row.img_url">
-            <img :src = "props.row.img_url"  />
+          <q-avatar  v-if="props.row.img_url">
+            <img  :src = "props.row.img_url"  />
           </q-avatar>
 
           <q-avatar v-else color="grey-4" icon="mdi-image-off" />
@@ -90,11 +93,12 @@ import useNotify from 'src/composables/UseNotify'
 import { useRouter } from 'vue-router'
 import {useQuasar} from 'quasar'
 import{columnsProduct} from './table'
+import useAuthUser from 'src/composables/UseAuthUser'
 
 
 
 export default defineComponent ({
-  name : 'PageCategoryList',
+  name : 'PageProductList',
 
   setup(){
 
@@ -106,7 +110,14 @@ export default defineComponent ({
     const loadingAllPage = ref(true)
     const router = useRouter()
     const $q = useQuasar()
+    const {user , checkUserAdmin} = useAuthUser()
+    const admin = ref(false)
 
+    const handleCheckBig = async (message) =>  {
+
+    admin.value = await checkUserAdmin(message)
+
+    }
 
     const handleListProducts = async () => {
 
@@ -146,6 +157,7 @@ export default defineComponent ({
     }
 
     onMounted (() => {
+      handleCheckBig(user.value.id)
       handleListProducts()
 
     })
@@ -158,7 +170,8 @@ export default defineComponent ({
       products,
       loading,
       handleEdit,
-      handleRemoveProduct
+      handleRemoveProduct,
+      admin
 
 
     }

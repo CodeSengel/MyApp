@@ -1,8 +1,29 @@
 <template>
   <q-page class="flex flex-center">
 
+    <div class="row">
+      <q-page-sticky
+
+        position="top-right"
+        :offset="[2,2]" >
+
+       <q-icon    :color=" admin ? 'black' : 'indigo' " name="mdi-circle" />
+
+      </q-page-sticky>
+
+
+
+
+
+
+
+
+    </div>
+
     <div v-if=user>
       <p> Azul {{user.user_metadata.name}} </p>
+
+
 
     </div>
 
@@ -11,7 +32,7 @@
 
 <script>
 import useAuthUser from 'src/composables/UseAuthUser'
-import { defineComponent,ref } from 'vue'
+import { defineComponent,ref, onMounted } from 'vue'
 import useApi from  'src/composables/UseApi'
 
 
@@ -23,25 +44,28 @@ export default defineComponent({
 
   setup (){
 
-    const {user} = useAuthUser()
+    const {user , checkUserAdmin} = useAuthUser()
     const {list,post} = useApi()
+    const admin = ref(false)
 
+    const handleCheckBig = async (message) =>  {
 
-    const handlelist = async () => {
-      var test = ref()
-      test = await list ('list1',"id")
-      console.log(test)
+      admin.value = await checkUserAdmin(message)
+
     }
-    const handlepost = async () => {
 
-      await list ('list1',{id : '3' , Name:'testfromfunc'})
-      console.log(test)
-    }
+
+
+    onMounted(()=> {
+
+      handleCheckBig(user.value.id)
+
+    })
 
     return {
       user,
-      handlelist,
-      handlepost
+      admin
+
     }
   }
 

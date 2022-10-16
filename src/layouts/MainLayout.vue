@@ -12,7 +12,9 @@
         />
 
         <q-toolbar-title>
-          My store
+          {{AppName}}
+
+
 
           <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
         </q-toolbar-title>
@@ -58,7 +60,14 @@
         </q-item-label>
 
         <EssentialLink
+          v-if="admin"
           v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+        />
+        <EssentialLink
+
+          v-for="link in essentialLinks2"
           :key="link.title"
           v-bind="link"
         />
@@ -75,20 +84,21 @@
 import { defineComponent, ref , onMounted} from 'vue'
 
 import EssentialLink from 'components/EssentialLink.vue'
+import useAuthUser from 'src/composables/UseAuthUser'
+import { useRouter } from 'vue-router'
+import {useQuasar} from 'quasar'
+const {user } = useAuthUser()
+
+
+const AppName = process.env.QUASAR_APP_NAME
 
 const linksList = [
-  {
-    title: 'Accueil',
-    caption: 'Bienvenu',
-    icon: 'mdi-home',
-    size : "md",
-    routername : "me"
 
-  },
   {
     title: 'Catégories *',
     caption: 'Voir mes catégories',
     icon: 'mdi-sitemap',
+    color: 'red',
     size : "md",
     routername : "category"
 
@@ -97,6 +107,7 @@ const linksList = [
     title: 'Produit *',
     caption: 'Voir mes produits',
     icon: 'mdi-tshirt-crew',
+    color: 'red',
     size : "md",
     routername : "product"
 
@@ -106,9 +117,51 @@ const linksList = [
 ]
 
 
-import useAuthUser from 'src/composables/UseAuthUser'
-import { useRouter } from 'vue-router'
-import {useQuasar} from 'quasar'
+const linksList2 = [
+  {
+    title: 'Accueil',
+    caption: 'Bienvenu',
+    icon: 'mdi-home',
+    size : "xl",
+
+    routername : "me",
+
+
+  },
+  {
+    title: 'Mes produits',
+    caption: 'Voir mes produits',
+    icon: 'mdi-tshirt-v',
+    size : "xl",
+
+    routername : "product-public",
+    paramvalue : user.value.user_metadata.name
+
+
+  },
+  {
+    title: 'Mon caddie',
+    caption: 'Voir mon caddie',
+    icon: 'mdi-cart',
+    size : "xl",
+
+    routername : "mycart",
+    paramvalue : user.value.user_metadata.name
+
+
+
+  },
+
+
+]
+
+
+
+
+
+
+
+
 
 export default defineComponent({
   name: 'MainLayout',
@@ -125,9 +178,17 @@ export default defineComponent({
   setup () {
     const $q = useQuasar()
     const router = useRouter()
-    const {logout , checkUserAdmin} = useAuthUser()
-    const {user} = useAuthUser()
-    var admin = 1
+    const {logout,user , checkUserAdmin} = useAuthUser()
+    const leftDrawerOpen = ref(false)
+
+
+    const admin = ref(false)
+
+    const handleCheckBig = async (message) =>  {
+
+      admin.value = await checkUserAdmin(message)
+
+    }
 
 
     const handleLogout = async () => {
@@ -148,12 +209,19 @@ export default defineComponent({
 
 
 
-    const leftDrawerOpen = ref(false)
 
+
+    onMounted(()=> {
+
+      handleCheckBig(user.value.id)
+
+
+    })
 
 
     return {
       essentialLinks: linksList,
+      essentialLinks2 : linksList2,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
@@ -161,6 +229,8 @@ export default defineComponent({
       handleLogout,
       toggleValue: ref(false),
       user,
+      admin,
+      AppName
 
 
     }

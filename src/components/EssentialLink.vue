@@ -1,25 +1,25 @@
 <template>
   <q-item
     clickable
-    :to = "{name : routername}"
+    :to = "({name : routername , params : {'id' : paramvalue} })"
     exact
   >
     <q-item-section
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" :size="size" />
+      <q-icon :name="icon" :color="color" :size="size" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>{{ caption }}</q-item-label>
+      <q-item-label style="font-size:large">  {{ title }}   </q-item-label>
+      <q-item-label caption style="font-size:small" >{{ caption }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent,onMounted } from 'vue'
 
 export default defineComponent({
   name: 'EssentialLink',
@@ -46,7 +46,18 @@ export default defineComponent({
     size : {
       type: String,
       default: ''
+    },
+    color : {
+      type: String,
+      default: ''
+    },
+    paramvalue : {
+      type: String,
+      default: ''
     }
-  }
+
+  },
+
+
 })
 </script>
