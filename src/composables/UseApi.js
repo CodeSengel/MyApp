@@ -27,11 +27,21 @@ export default function useApi() {
     const {data, error} = await supabase
     .from(table)
     .select('*')
+    .order('id', { ascending: false })
 
     if(error) throw error
     return data
   }
 
+
+  const productlistwithlikeditem = async (message) => {
+    const { data, error } = await supabase
+    .rpc('product_list_with_liked', {
+      f_userid  : message
+    })
+    if(error) throw error
+    return data
+  }
 
 
   const getById = async (table, id) => {
@@ -104,6 +114,37 @@ export default function useApi() {
     return publicURL;
   };
 
+  const likefunction = async (prod_id,user_id) => {
+
+    const { data, error } = await supabase
+    .rpc('like_function_1', {
+       prodid : prod_id, userid :user_id
+    })
+
+    if (error) throw error
+    return(data)
+
+    }
+
+
+    const dislikefunction = async (prod_id,user_id) => {
+
+      const { data, error } = await supabase
+      .rpc('dislike_function', {
+         prodid : prod_id, userid :user_id
+      })
+
+      if (error) throw error
+      return(data)
+
+      }
+
+
+
+
+
+
+
   return {
 
     list,
@@ -111,6 +152,9 @@ export default function useApi() {
     getById,
     update,
     remove,
-    uploadImg
+    uploadImg,
+    likefunction,
+    productlistwithlikeditem,
+    dislikefunction
   }
 }

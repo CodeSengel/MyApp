@@ -1,6 +1,10 @@
 <template>
 
   <q-page padding class="justify-center">
+
+
+
+
 <!--
     <q-dialog v-model="dialog">
 
@@ -72,18 +76,19 @@
     <div class=" table ">
 
 
-      <q-linear-progress v-if="loading" indeterminate />
+
 
       <q-table
 
         grid
         title="Categories"
-        :rows="products "
+        :rows="productsliked "
         :columns="columnsProduct"
         row-key="id"
         :hide-pagination="true"
         :rows-per-page-options="[0]"
         :filter ="filter"
+        :loading="loading"
 
 
       >
@@ -110,12 +115,77 @@
       <template v-slot:item="props">
         <!--         q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition -->
         <div class="  q-pa-xs col-xs-6 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
+
           <q-card >
-            <q-img @click="dialogtrigger(props.row)  ,  dialog = true " :src="props.row.img_url" :ratio="4/3" />
-            <q-card-sectio>
-              <div class="text-center text-h6"> {{props.row.name}}</div>
-              <div class="text-center subtitle"> {{props.row.price}} DA </div>
+
+                <div v-ripple >
+
+
+                  <q-img @click="dialogtrigger(props.row)  ,  dialog = true " :src="props.row.img_url" :ratio="4/3">
+
+
+                  </q-img>
+                </div>
+
+                <q-card-sectio class=" bg-red text-center  text-white ">
+
+
+
+
+                <figcaption class="  imglegendtitle2">
+                  <div class="row text-center">
+                    <div class="col-10">
+                      <div style="font-size:15px ;">
+                        {{ props.row.name }}
+                      </div>
+                    </div>
+
+
+
+                    <div  class="col-2 q-mt-md" style="font-size: 10px ;">
+
+                      {{ props.row.likes }}
+                    </div>
+
+                  </div>
+
+
+                  <div class="row justify-center">
+                    <div class="col-10 ">
+                      {{props.row.price}} DA
+                    </div>
+                    <div class="col-2 ">
+
+                      <q-icon  @click="liketrigger(props.row.liked,props.row.id)" :color=" props.row.liked ? 'red' : 'grey' "  size="md" class="hearticon"   name="mdi-heart">
+
+
+
+                      </q-icon>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                </figcaption>
+
+
+
+
+
+
+
             </q-card-sectio>
+
+
+
+
+
           </q-card>
         </div>
 
@@ -156,17 +226,22 @@ export default defineComponent ({
 
     const CategoriesTabName = process.env.QUASAR_APP_TAB_NAME_PRODUITS
     const products = ref([])
-    const {list} = useApi()
+    const productsliked = ref([])
+    const {list,likefunction,dislikefunction,productlistwithlikeditem} = useApi()
     const {notifyError} = useNotify()
     const loading = ref(true)
     const loadingAllPage = ref(true)
     const {user , checkUserAdmin} = useAuthUser()
+
+
+
     const admin = ref(false)
     const filter = ref('')
     const dialog = ref(false)
     const dialogimg = ref('')
     const dialogdescription = ref('')
     const dialogprice = ref('')
+
 
 
     const handleCheckBig = async (message) =>  {
@@ -177,7 +252,11 @@ export default defineComponent ({
 
       try {
         loading.value = true
-        products.value = await list(CategoriesTabName)
+        //products.value = await list(CategoriesTabName)
+        productsliked.value = await productlistwithlikeditem(user.value.id)
+        console.log('voici 1 ',products)
+        console.log('voici 2 ',productsliked)
+
         loading.value = false
       } catch (error) {
         notifyError(error.message)
@@ -186,20 +265,49 @@ export default defineComponent ({
 
     }
 
+
+
     const dialogtrigger = (message) => {
 
-      console.log("voici le message", message.img_url)
+
       dialogimg.value = message.img_url
       dialogdescription.value = message.description
       dialogprice.value = message.price
-      console.log("voici le url " , dialogimg)
+
+
+    }
+
+    const liketrigger = (liked , message) => {
+
+
+
+      if (liked) {
+        dislikefunction(message , user.value.id)
+        handleListProducts()
+        handleListProducts()
+      } else {
+        likefunction(message , user.value.id)
+        handleListProducts()
+        handleListProducts()
+      }
+
+
+
 
     }
 
 
 
 
+
+
+
+
+
+
+
     onMounted (() => {
+
 
       handleListProducts()
 
@@ -211,6 +319,7 @@ export default defineComponent ({
     return{
       columnsProduct,
       products,
+      productsliked,
       loading,
       admin,
       filter,
@@ -218,7 +327,9 @@ export default defineComponent ({
       dialog,
       dialogimg,
       dialogdescription,
-      dialogprice
+      dialogprice,
+
+      liketrigger
 
 
     }
@@ -228,6 +339,11 @@ export default defineComponent ({
 </script>
 
 <style>
+
+  .hearticon:hover {
+    background-color: rgb(219, 241, 23);
+  }
+
   .my-card{
     width: 100%;
   }
@@ -237,5 +353,15 @@ export default defineComponent ({
 
     background: linear-gradient(182deg, rgba(73, 4, 249, 0.95) 0%, rgb(65, 62, 62) 68%);
     border-radius: 10%;
+  }
+
+  .imglegendtitle1{
+
+    background: linear-gradient(90deg, rgba(73, 4, 249, 0.95) 0%, rgb(65, 62, 62) 100%);
+  }
+  .imglegendtitle2{
+
+  background:rgba(2, 139, 2, 0.6)
+
   }
 </style>

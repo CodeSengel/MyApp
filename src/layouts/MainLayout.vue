@@ -16,6 +16,7 @@
 
 
 
+
           <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
         </q-toolbar-title>
 
@@ -238,8 +239,8 @@ export default defineComponent({
 
   methods : {
     changemode : function () {
-
-    this.$q.dark.set(this.toggleValue) }
+    //this.$q.dark.set(this.toggleValue)
+    this.$q.dark.set(true) }
   }
 })
 </script>
