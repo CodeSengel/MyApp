@@ -15,55 +15,44 @@
   -->
   <q-dialog v-model="dialog" >
 
+    <q-card >
 
-    <q-card class="my-card" flat bordered>
-      <q-card-section dense vertical>
-
-
-
-       <p> {{dialogdescription}} </p>
-      </q-card-section>
+      <q-card-section class="row">
 
 
+        <div class="col-10">
+          <strong>  Détails </strong>
+        </div>
+        <div class="col-2">
+          <strong> <q-icon name="mdi-heart"></q-icon> {{dialoginfo.likes}} </strong>
+        </div>
 
 
-      <q-card-section vertical>
-        <q-img
-          class="row"
-          :src="dialogimg"
 
-          style="height:100% ;width : 100%"
-        >
-
-      </q-img>
 
 
 
       </q-card-section>
 
+      <q-card-section class="q-pa-xs">
+        <q-img v-if="dialoginfo.img_url" :src="dialoginfo.img_url" style="min-width:50%" ></q-img>
+      </q-card-section>
 
-      <q-page-sticky
-          class="stickyb justify-center"
-          position="bottom-right"
-          :offset="[20,100]" >
+      <q-card-section>
+        <div class="text-h6">
+          {{dialoginfo.name}}
+        </div>
+        <div class="text-subtitle2">
+          {{dialoginfo.price}} DA
+        </div>
+        <div class="text-subtitle3" v-html="dialoginfo.description"/>
+      </q-card-section>
 
-        <q-card-section>
-          <q-card-actions horizontal class=" justify-center row q-gutter-none">
-
-
-            <q-btn class="col-3" label="J'aime" flat round color="red" icon="favorite" />
-            <q-btn class="col-3" label="Acheter"  flat round color="green-2" icon="mdi-cart" />
+      <q-card-section class=" justify-center row q-gutter-md">
+            <q-btn class=" col-2" label="J'aime" flat round :color=" dialoginfo.liked ? 'red' : 'grey' " icon="favorite"   @click="liketrigger(dialoginfo.liked,dialoginfo.id)"/>
+            <q-btn class="col-3" label="Acheter"  flat round color="green" icon="mdi-cart" />
             <q-btn class="col-3" label="Partager" flat round color="orange" icon="share" />
-          </q-card-actions>
-
-
-        </q-card-section>
-
-      </q-page-sticky>
-
-
-
-
+      </q-card-section>
 
     </q-card>
   </q-dialog>
@@ -93,6 +82,8 @@
 
       >
 
+
+
       <template v-slot:top>
         <span >
          <strong> Mes produits </strong>
@@ -118,7 +109,7 @@
 
           <q-card >
 
-                <div v-ripple >
+                <div v-ripple:primary >
 
 
                   <q-img @click="dialogtrigger(props.row)  ,  dialog = true " :src="props.row.img_url" :ratio="4/3">
@@ -127,7 +118,7 @@
                   </q-img>
                 </div>
 
-                <q-card-sectio class=" bg-red text-center  text-white ">
+                <div class="  text-center  text-white ">
 
 
 
@@ -155,12 +146,16 @@
                       {{props.row.price}} DA
                     </div>
                     <div class="col-2 ">
-
-                      <q-icon  @click="liketrigger(props.row.liked,props.row.id)" :color=" props.row.liked ? 'red' : 'grey' "  size="md" class="hearticon"   name="mdi-heart">
-
-
+                      <q-btn class="q-pa-none" @click="liketrigger(props.row.liked,props.row.id)">
+                        <q-icon   :color=" props.row.liked ? 'red' : 'grey' "  size="md" class="hearticon"   name="mdi-heart">
 
                       </q-icon>
+                      </q-btn>
+
+
+
+
+
                     </div>
 
 
@@ -180,7 +175,7 @@
 
 
 
-            </q-card-sectio>
+              </div>
 
 
 
@@ -238,9 +233,10 @@ export default defineComponent ({
     const admin = ref(false)
     const filter = ref('')
     const dialog = ref(false)
-    const dialogimg = ref('')
-    const dialogdescription = ref('')
-    const dialogprice = ref('')
+
+
+
+    const dialoginfo=ref({})
 
 
 
@@ -254,10 +250,10 @@ export default defineComponent ({
         loading.value = true
         //products.value = await list(CategoriesTabName)
         productsliked.value = await productlistwithlikeditem(user.value.id)
-        console.log('voici 1 ',products)
-        console.log('voici 2 ',productsliked)
+
 
         loading.value = false
+
       } catch (error) {
         notifyError(error.message)
 
@@ -269,31 +265,39 @@ export default defineComponent ({
 
     const dialogtrigger = (message) => {
 
+      dialoginfo.value = message
 
-      dialogimg.value = message.img_url
-      dialogdescription.value = message.description
-      dialogprice.value = message.price
+
+
 
 
     }
 
     const liketrigger = (liked , message) => {
-
-
-
       if (liked) {
         dislikefunction(message , user.value.id)
-        handleListProducts()
-        handleListProducts()
+        setTimeout(() => {handleListProducts()}, 250);
+        setTimeout(() => {
+          productsliked.value.filter(function(el,key){
+            if(el.id == message ) {
+              dialoginfo.value = el
+            }
+          })
+        }
+        , 500);
+
       } else {
         likefunction(message , user.value.id)
-        handleListProducts()
-        handleListProducts()
+        setTimeout(() => {handleListProducts()}, 250);
+        setTimeout(() => {
+         productsliked.value.filter(function(el){
+            if(el.id == message ) {
+              dialoginfo.value = el
+            }
+          })
+        }
+        , 500);
       }
-
-
-
-
     }
 
 
@@ -325,11 +329,9 @@ export default defineComponent ({
       filter,
       dialogtrigger,
       dialog,
-      dialogimg,
-      dialogdescription,
-      dialogprice,
+      dialoginfo,
+      liketrigger,
 
-      liketrigger
 
 
     }
@@ -341,7 +343,7 @@ export default defineComponent ({
 <style>
 
   .hearticon:hover {
-    background-color: rgb(219, 241, 23);
+    /*background-color: rgb(219, 241, 23);*/
   }
 
   .my-card{
