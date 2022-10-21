@@ -95,6 +95,14 @@ export default function useApi() {
     return data, error;
   };
 
+  const removefromlikes = async (table,col, keyword) => {
+    const { data, error } = await supabase.from(table).delete().eq(col, keyword);
+
+    if (error) throw error;
+
+    return data, error;
+  };
+
   const uploadImg = async (file, storage) => {
     const fileName = uuidv4();
     const { error } = supabase.storage.from(storage).upload(fileName, file, {
@@ -155,6 +163,7 @@ export default function useApi() {
     uploadImg,
     likefunction,
     productlistwithlikeditem,
-    dislikefunction
+    dislikefunction,
+    removefromlikes
   }
 }

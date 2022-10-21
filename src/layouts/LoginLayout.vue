@@ -4,13 +4,23 @@
       <q-toolbar>
 
 
-        <q-toolbar-title>
-          {{AppName}}
+        <q-toolbar-title class=" row appname">
 
-          <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
+          <div class="appname" >
+            {{AppName}}
+          </div>
+
+          <div >
+            <q-icon class="cart"  size="lg" color="orange" name="mdi-cart"> </q-icon>
+
+          </div>
+
+
+
 
 
         </q-toolbar-title>
+
 
 
         <q-toggle
@@ -35,7 +45,11 @@
 </template>
 
 <script>
-import { defineComponent,ref } from 'vue'
+import { defineComponent,ref, onMounted } from 'vue'
+import TweenMax from 'gsap'
+import {useQuasar} from 'quasar'
+
+
 
 
 
@@ -43,7 +57,27 @@ export default defineComponent({
   name: 'LoginLayout',
   toggleValue : ref(true),
 
+
   setup () {
+    const $q = useQuasar()
+
+    onMounted(()=> {
+
+      console.log('aqlagh !! ',$q.platform.is.mobile)
+
+        TweenMax.to(".cart",{duration : 2.5,opacity:1, x:'50%'})
+
+        TweenMax.from(".cart",{opacity:1,duration : 2, rotation:100})
+        TweenMax.fromTo(".appname", {x:'-100%'}, {duration : 2,opacity:1, x:'10%'})
+        TweenMax.to(".cart",{duration : 2,opacity:1, x:'0%',delay:3, ease:'bounce'})
+        TweenMax.to(".appname",{duration : 1.5,opacity:1, x:'0%',delay:3})
+
+
+
+
+
+
+      })
 
 
 
@@ -53,6 +87,8 @@ export default defineComponent({
       AppName,
       toggleValue: ref(true),
     }
+
+
   },
 
   methods : {

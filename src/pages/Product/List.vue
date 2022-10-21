@@ -14,7 +14,7 @@
         row-key="id"
         class="col-12"
         :rows-per-page-options="[0]"
-        clickable
+
 
       >
 
@@ -104,7 +104,7 @@ export default defineComponent ({
 
     const CategoriesTabName = process.env.QUASAR_APP_TAB_NAME_PRODUITS
     const products = ref([])
-    const {list,remove} = useApi()
+    const {list,remove,removefromlikes} = useApi()
     const {notifyError, notifySuccess} = useNotify()
     const loading = ref(true)
     const loadingAllPage = ref(true)
@@ -145,6 +145,8 @@ export default defineComponent ({
           cancel: true,
           persistent : true
         }).onOk(async () => {
+
+          await removefromlikes('produits_likes','product_id',product.id)
           await remove(CategoriesTabName , product.id )
           notifySuccess('le produit a bien été supprimée ')
           handleListProducts()

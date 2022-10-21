@@ -35,7 +35,7 @@
       </q-card-section>
 
       <q-card-section class="q-pa-xs">
-        <q-img v-if="dialoginfo.img_url" :src="dialoginfo.img_url" style="min-width:50%" ></q-img>
+        <q-img v-if="dialoginfo.img_url" :src="dialoginfo.img_url" style="max-height:300px ; min-height:250px"  ></q-img>
       </q-card-section>
 
       <q-card-section>
@@ -62,7 +62,7 @@
 
 
 
-    <div class=" table ">
+    <div  class=" table ">
 
 
 
@@ -80,13 +80,15 @@
         :loading="loading"
 
 
+
+
       >
 
 
 
-      <template v-slot:top>
+      <template  v-slot:top>
         <span >
-         <strong> Mes produits </strong>
+         <strong > Mes produits </strong>
         </span >
         <q-space/>
 
@@ -103,16 +105,16 @@
       </template>
 
 
-      <template v-slot:item="props">
+      <template  v-slot:item="props">
         <!--         q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition -->
         <div class="  q-pa-xs col-xs-6 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
 
-          <q-card >
+          <q-card style="border-top-right-radius: 10%;border-top-left-radius: 10%;">
 
-                <div v-ripple:primary >
+                <div v-ripple:primary  >
 
 
-                  <q-img @click="dialogtrigger(props.row)  ,  dialog = true " :src="props.row.img_url" :ratio="4/3">
+                  <q-img  style="border-top-right-radius: 10%;border-top-left-radius: 10%;" @click="dialogtrigger(props.row)  ,  dialog = true " :src="props.row.img_url" :ratio="4/3">
 
 
                   </q-img>
@@ -123,7 +125,7 @@
 
 
 
-                <figcaption class="  imglegendtitle2">
+                <figcaption  class="  imglegendtitle2">
                   <div class="row text-center">
                     <div class="col-10">
                       <div style="font-size:15px ;">
@@ -147,7 +149,7 @@
                     </div>
                     <div class="col-2 ">
                       <q-btn class="q-pa-none" @click="liketrigger(props.row.liked,props.row.id)">
-                        <q-icon   :color=" props.row.liked ? 'red' : 'grey' "  size="md" class="hearticon"   name="mdi-heart">
+                        <q-icon  class="hearticon"   :color=" props.row.liked ? 'red' : 'grey' "  size="md"   name="mdi-heart">
 
                       </q-icon>
                       </q-btn>
@@ -211,6 +213,11 @@ import useApi from 'src/composables/UseApi'
 import useNotify from 'src/composables/UseNotify'
 import{columnsProduct} from './table'
 import useAuthUser from 'src/composables/UseAuthUser'
+import TweenMax from 'gsap'
+
+
+
+
 
 
 
@@ -259,6 +266,9 @@ export default defineComponent ({
 
       }
 
+
+
+
     }
 
 
@@ -285,6 +295,9 @@ export default defineComponent ({
           })
         }
         , 500);
+
+        hearticon
+
 
       } else {
         likefunction(message , user.value.id)
@@ -314,6 +327,7 @@ export default defineComponent ({
 
 
       handleListProducts()
+      TweenMax.from(".table",{duration : 3,opacity:0, y:'-50%'})
 
     })
 

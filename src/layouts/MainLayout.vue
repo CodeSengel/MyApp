@@ -17,7 +17,7 @@
 
 
 
-          <q-icon size="lg" color="orange" name="mdi-cart"> </q-icon>
+          <q-icon class="cart" size="lg" color="orange" name="mdi-cart"> </q-icon>
         </q-toolbar-title>
 
         <q-toggle
@@ -88,6 +88,8 @@ import EssentialLink from 'components/EssentialLink.vue'
 import useAuthUser from 'src/composables/UseAuthUser'
 import { useRouter } from 'vue-router'
 import {useQuasar} from 'quasar'
+import TweenMax from 'gsap'
+
 const {user } = useAuthUser()
 
 
@@ -215,6 +217,13 @@ export default defineComponent({
     onMounted(()=> {
 
       handleCheckBig(user.value.id)
+      TweenMax.set(".cart", { scaleX: 1, transformOrigin: "center center" });
+      TweenMax.from(".cart",{duration : 4, rotation:-45})
+      TweenMax.from(".cart",{duration : 3,opacity:0.5, x:'600%',ease:'bounce'})
+      TweenMax.from(".cart", {delay: 4, duration : 2 , rotationY: 180});
+
+
+
 
 
     })
