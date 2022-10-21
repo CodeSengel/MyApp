@@ -326,7 +326,7 @@ export default defineComponent ({
     onMounted (() => {
 
 
-      handleListProducts().then(TweenMax.from(".table",{duration : 3,opacity:0, y:'-50%'}))
+      handleListProducts().then(TweenMax.from(".table",{duration : 2,opacity:0, y:'-50%'}))
 
     })
 
